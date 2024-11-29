@@ -1,46 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import BackButton from "../../components/BackButton";
+import { useUser } from '../helpers/UserContext';
+import axios from 'axios';
 
 export default function UserProfileScreen() {
-  const [user, setUser] = useState(null); // State to store user data
+  const { user, setUserData } = useUser();
+  const [userDetails, setuserDetails] = useState(null); // State to store user data
   const [isLoading, setIsLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for error handling
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Dummy user data (replace with real API response later)
-        const dummyUser = {
-          username: 'john_doe',
-          email: 'john.doe@example.com',
-          password: '********', // For security, avoid displaying passwords
-          firstName: 'John',
-          lastName: 'Doe',
-        };
-        setUser(dummyUser); // Set dummy data
+        if (user && user.user_id) {
+          const response = await axios.get(`http://localhost:8080/ocr/getuser?user_id=${user.user_id}`);
+          setuserDetails(response.data);
+        }
       } catch (err) {
         setError(err);
       } finally {
         setIsLoading(false);
       }
     };
-
+    console.log('User details:', userDetails)
     fetchData();
-  }, []); // Empty dependency array to fetch data only once
+  }, [user]); 
 
   const handleInputChange = (field, value) => {
-    setUser(prevUser => ({
+    setuserDetails(prevUser => ({
       ...prevUser,
-      [field]: value, // Dynamically update the user data
+      [field]: value, 
     }));
   };
 
-  const handleSave = () => {
-    // Implement save functionality, e.g., save to an API or local storage
-    alert('User data saved!');
+  const handleSave = async () => {
+    try {
+      const response = await axios.patch('http://localhost:8080/ocr/updateuser', {
+        user_id: user.user_id,
+        user_name: userDetails.username,
+        first_name: userDetails.firstName,
+        last_name: userDetails.lastName,
+        email: userDetails.email,
+        hashed_password: userDetails.password,
+      });
+      if (response.status === 200) {
+        alert('User data saved successfully!');
+      }
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      alert('There was an error saving the user data');
+    }
   };
 
   if (isLoading) {
@@ -54,63 +66,63 @@ export default function UserProfileScreen() {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("")} />
-    <View style={styles.container}>
-      <Text style={styles.heading}>Edit User Profile</Text>
+      <BackButton goBack={() => navigation.navigate("screens/HomeScreen")} />
+      <View style={styles.container}>
+        <Text style={styles.heading}>Edit User Profile</Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Username:</Text>
-        <TextInput
-          style={styles.input}
-          value={user.username}
-          onChangeText={(text) => handleInputChange('username', text)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Username:</Text>
+          <TextInput
+            style={styles.input}
+            value={user.user_name}
+            onChangeText={(text) => handleInputChange('user_name', text)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email:</Text>
-        <TextInput
-          style={styles.input}
-          value={user.email}
-          onChangeText={(text) => handleInputChange('email', text)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email:</Text>
+          <TextInput
+            style={styles.input}
+            value={user.email}
+            onChangeText={(text) => handleInputChange('email', text)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Password:</Text>
-        <TextInput
-          style={styles.input}
-          value={user.password}
-          onChangeText={(text) => handleInputChange('password', text)}
-          secureTextEntry={true} // Hide password input
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Password:</Text>
+          <TextInput
+            style={styles.input}
+            value={user.hashed_password}
+            onChangeText={(text) => handleInputChange('hashed_password', text)}
+            secureTextEntry={true} // Hide password input
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>First Name:</Text>
-        <TextInput
-          style={styles.input}
-          value={user.firstName}
-          onChangeText={(text) => handleInputChange('firstName', text)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>First Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={user.first_name}
+            onChangeText={(text) => handleInputChange('first_name', text)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Last Name:</Text>
-        <TextInput
-          style={styles.input}
-          value={user.lastName}
-          onChangeText={(text) => handleInputChange('lastName', text)}
-        />
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Last Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={user.last_name}
+            onChangeText={(text) => handleInputChange('last_name', text)}
+          />
+        </View>
+        <Button
+            mode="contained"
+            onPress={handleSave}
+            style={styles.button}
+          >
+            <Text style={styles.topButtonText}>Save Changes</Text>
+          </Button>
       </View>
-      <Button
-          mode="contained"
-          onPress={handleSave}
-          style={styles.button}
-        >
-          <Text style={styles.topButtonText}>Save Changes</Text>
-        </Button>
-    </View>
     </Background>
   );
 }
