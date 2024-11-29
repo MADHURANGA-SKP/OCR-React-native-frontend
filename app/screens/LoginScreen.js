@@ -46,6 +46,7 @@ export default function LoginScreen({ navigation }) {
         autoCompleteType="email"
         textContentType="emailAddress"
         keyboardType="email-address"
+        style={styles.textInput}
       />
       <TextInput
         label="Password"
@@ -55,6 +56,7 @@ export default function LoginScreen({ navigation }) {
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
+        style={styles.textInput}
       />
       <View style={styles.forgotPassword}>
         <TouchableOpacity
@@ -95,5 +97,15 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: "bold",
     color: theme.colors.primary,
+  },
+  textInput: {
+    backgroundColor: "#F3E5F5", // Optional: Light lavender background
+    borderRadius: 25, // Rounded border
+    height: 50,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#CE93D8", // Optional: Matching border color
+    marginVertical: 10,
   },
 });

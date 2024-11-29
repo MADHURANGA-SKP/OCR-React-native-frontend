@@ -56,7 +56,7 @@ export default function UserProfileScreen() {
     <Background>
       <BackButton goBack={() => navigation.navigate("")} />
     <View style={styles.container}>
-      <Text style={styles.heading}>Edit User Profile</Text>
+      <Text style={styles.heading}>John Dohn</Text>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Username:</Text>
@@ -125,24 +125,46 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    color: '#58d68d',
   },
   inputGroup: {
     marginBottom: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
   },
   label: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 5,
+    marginRight: 10,
+    color: '#58d68d',
   },
   input: {
+    flex: 1,
     height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    borderColor: 'transparent',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
     fontSize: 16,
   },
   button: {
     marginTop: 20,
+    backgroundColor: '#58d68d',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

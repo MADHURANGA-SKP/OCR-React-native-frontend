@@ -14,6 +14,7 @@ export default function ExtractedImagesListScreen() {
     <Background>
       <BackButton goBack={() => navigation.navigate("")} />
     <View style={styles.container}>
+    <Text style={styles.heading}>Extracted Images</Text>
       <FlatList
         data={extractedImages}
         keyExtractor={(item) => item.id}
@@ -33,9 +34,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    marginTop:25,
+
   },
   item: {
-    marginBottom: 16,
+    marginBottom: 25,
     padding: 16,
     backgroundColor: '#f9f9f9',
     borderRadius: 8,
@@ -51,5 +54,12 @@ const styles = StyleSheet.create({
   extractedText: {
     fontSize: 14,
     marginTop: 8,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#58d68d',
   },
 });
