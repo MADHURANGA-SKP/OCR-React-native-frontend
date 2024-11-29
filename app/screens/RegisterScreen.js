@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity,Alert  } from "react-native";
 import { Text } from "react-native-paper";
-
+import axios from "axios";
 import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -14,25 +14,66 @@ import { passwordValidator } from "../helpers/passwordValidator";
 import { nameValidator } from "../helpers/nameValidator";
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState({ value: "", error: "" });
+  const [firstName, setFirstName] = useState({ value: "", error: "" });
+  const [lastName, setLastName] = useState({ value: "", error: "" });
+  const [userName, setUserName] = useState({ value: "", error: "" });
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
 
-  const onSignUpPressed = () => {
-    const nameError = nameValidator(name.value);
+  const onSignUpPressed = async () => {
+    // Validate input fields
+    const firstNameError = nameValidator(firstName.value);
+    const lastNameError = nameValidator(lastName.value);
+    const userNameError = nameValidator(userName.value);
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
 
-    if (emailError || passwordError || nameError) {
-      setName({ ...name, error: nameError });
+    if (emailError || passwordError || firstNameError || lastNameError) {
+      setFirstName({ ...firstName, error: firstNameError });
+      setLastName({ ...lastName, error: lastNameError });
+      setUserName({ ...userName, error: userNameError });
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
       return;
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "HomeScreen" }],
+    try {
+    // Send POST request to Golang backend API
+    const response = await axios.post('http://172.25.141.196:8080/ocr/signup', {
+      user_name: userName.value,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      email: email.value,
+      hashed_password: password.value,
     });
+
+    if (response.status === 200) {
+      // Show success alert and navigate after a delay
+      alert("Success", "Account created successfully!", [
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "LoginScreen" }], // Redirect to LoginScreen
+              });
+            },
+          },
+        ],
+        { cancelable: false }
+      ]);
+    } else  {
+      // Handle other server error responses
+      alert("Server Error", "An error occurred. Please try again.");
+    }
+  } catch (error) {
+    // Handle error response from the backend
+    if (error.response) {
+      alert("failed to create User, Please try again");
+    } else {
+      alert("Error", "Unable to reach the server. Please check your connection.");
+    }
+  } 
   };
 
   return (
@@ -43,18 +84,26 @@ export default function RegisterScreen({ navigation }) {
       <TextInput
         label="FirstName"
         returnKeyType="next"
-        value={name.value}
-        onChangeText={(text) => setName({ value: text, error: "" })}
-        error={!!name.error}
-        errorText={name.error}
+        value={firstName.value}
+        onChangeText={(text) => setFirstName({ value: text, error: "" })}
+        error={!!firstName.error}
+        errorText={firstName.error}
       />
       <TextInput
         label="LastName"
         returnKeyType="next"
-        value={name.value}
-        onChangeText={(text) => setName({ value: text, error: "" })}
-        error={!!name.error}
-        errorText={name.error}
+        value={lastName.value}
+        onChangeText={(text) => setLastName({ value: text, error: "" })}
+        error={!!lastName.error}
+        errorText={lastName.error}
+      />
+      <TextInput
+        label="UserName"
+        returnKeyType="next"
+        value={userName.value}
+        onChangeText={(text) => setUserName({ value: text, error: "" })}
+        error={!!userName.error}
+        errorText={userName.error}
       />
       <TextInput
         label="Email"
@@ -79,10 +128,25 @@ export default function RegisterScreen({ navigation }) {
       />
       <Button
         mode="contained"
-        onPress={onSignUpPressed}
+        onPress={async () => {
+          const success = await onSignUpPressed(); 
+          if (!success) {
+            // Reset navigation and redirect to LoginScreen
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "RegisterScreen" }],
+            });
+          }if (success) {
+            // Reset navigation and redirect to LoginScreen
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "LoginScreen" }],
+            });
+          }
+        }}
         style={{ marginTop: 24 }}
       >
-        Next
+        Register
       </Button>
       <View style={styles.row}>
         <Text>I already have an account !</Text>
