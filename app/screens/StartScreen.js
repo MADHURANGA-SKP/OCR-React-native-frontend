@@ -7,10 +7,6 @@ import Paragraph from "../../components/Paragraph";
 import LoginImg from "../../components/LoginImg";
 
 export default function StartScreen({ navigation }) {
-  const handleLogin = () => {
-    navigation.navigate('HomeScreen');
-  };
-
   return (
     <Background>
       <LoginImg />
