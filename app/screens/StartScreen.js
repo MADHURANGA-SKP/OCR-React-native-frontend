@@ -1,9 +1,10 @@
 import React from "react";
 import Background from "../../components/Background";
-import Logo from "../../components/Logo";
+import Logo from "../../components/LoginImg";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import Paragraph from "../../components/Paragraph";
+import LoginImg from "../../components/LoginImg";
 
 export default function StartScreen({ navigation }) {
   const handleLogin = () => {
@@ -12,7 +13,7 @@ export default function StartScreen({ navigation }) {
 
   return (
     <Background>
-      <Logo />
+      <LoginImg />
       <Header>Welcome</Header>
       <Paragraph>
         A starter app template for React Native Expo, featuring a ready-to-use

@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { useUser } from "../helpers/UserContext";
 import axios from "axios";
 import Background from "../../components/Background";
-import Logo from "../../components/Logo";
+import LoginImg2 from "../../components/LoginImg2";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
 
     try {
       // Make POST request to Golang backend API
-      const response = await axios.post('http://localhost:8080/ocr/login', {
+      const response = await axios.post('http://172.25.141.196:8080/ocr/login', {
         user_name: UserName.value,
         hashed_password: password.value,
       });
@@ -89,11 +89,12 @@ export default function LoginScreen({ navigation }) {
   return (
     <Background>
       
-      <Logo />
+      <LoginImg2 />
       <Header>Hello.</Header>
       <TextInput
         label="Username"
         returnKeyType="next"
+        mode="outlined"
         value={UserName.value}
         onChangeText={(text) => setUserName({ value: text, error: "" })}
         autoCapitalize="none"
@@ -102,6 +103,7 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Password"
         returnKeyType="done"
+        mode="outlined"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: "" })}
         error={!!password.error}

@@ -38,7 +38,7 @@ export default function UserProfileScreen() {
 
   const handleSave = async () => {
     try {
-      const response = await axios.patch('http://localhost:8080/ocr/updateuser', {
+      const response = await axios.patch('http://172.25.141.196:8080/ocr/updateuser', {
         user_id: user.user_id,
         user_name: userDetails.username,
         first_name: userDetails.firstName,

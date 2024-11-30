@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }) {
         formData.append("image", file);
 
         // Send the FormData to the server
-        const serverResponse = await axios.post("http://localhost:8080/ocr/imageconv", formData, {
+        const serverResponse = await axios.post("http://172.25.141.196:8080/ocr/imageconv", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
