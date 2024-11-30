@@ -3,15 +3,15 @@ import { View, StyleSheet, Text } from "react-native";
 import { Button } from "react-native-paper"; 
 import Background from "../../components/Background";
 import BackButton from "../../components/BackButton";
+import Men from "../../components/menucom";
 
 export default function SettingsScreen({ navigation }) {
   
   return (
     <Background>
       <BackButton goBack={() => navigation.navigate("HometScreen")} />
+        <Men/>
       <View style={styles.container}>
-        <Text style={styles.header}>Menu</Text>
-
         <Button
           mode="contained"
           onPress={() => navigation.navigate("userScreen")}
@@ -41,24 +41,22 @@ export default function SettingsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    padding: 16,
-  },
   header: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 24,
   },
+  buttonContainer: {
+    justifyContent: "flex-end",
+  },
   button: {
-    marginVertical: 16,
-    width: "100%", 
+    width: "100%",
+    marginVertical: 10,
+    paddingVertical: 2,
   },
   topButtonText: {
-    fontSize: 16,
-    color: "white",
-    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 15,
+    lineHeight: 26,
   },
 });

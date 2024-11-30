@@ -6,6 +6,7 @@ import Background from "../../components/Background";
 import SignUp from "../../components/SignUp";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import Signup from "../../components/reg";
 import TextInput from "../../components/TextInput";
 import BackButton from "../../components/BackButton";
 import { theme } from "../core/theme";
@@ -75,7 +76,9 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <Background>
-      <Header>Welcome.</Header>
+      <BackButton goBack={() => navigation.navigate("StartScreen")} />
+      <Signup/>
+      <Header>Please sign up to continue.</Header>
       <TextInput
         label="FirstName"
         returnKeyType="next"
@@ -126,12 +129,12 @@ export default function RegisterScreen({ navigation }) {
         onPress={async () => {
           const success = await onSignUpPressed(); 
           if (!success) {
-            navigation.reset({
+            navigation.replace({
               index: 0,
               routes: [{ name: "RegisterScreen" }],
             });
           }if (success) {
-            navigation.reset({
+            navigation.replace({
               index: 0,
               routes: [{ name: "LoginScreen" }],
             });

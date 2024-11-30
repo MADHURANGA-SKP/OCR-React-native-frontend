@@ -10,10 +10,9 @@ export default function StartScreen({ navigation }) {
   return (
     <Background>
       <LoginImg />
-      <Header>Welcome</Header>
+      <Header>Welcome to GoOCR!</Header>
       <Paragraph>
-        A starter app template for React Native Expo, featuring a ready-to-use
-        login screen.
+      Your Gateway to Modern Solutions
       </Paragraph>
       <Button
         mode="contained"

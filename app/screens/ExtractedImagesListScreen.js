@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, ScrollView  } from 'react-native';
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import axios from 'axios';
+import Header from "../../components/Header";
 import { useUser } from '../helpers/UserContext';
 
 export default function ExtractedImagesListScreen({ navigation }) {
@@ -40,6 +41,7 @@ export default function ExtractedImagesListScreen({ navigation }) {
 
   return (
     <Background>
+      <Header>View Extracted Data</Header>
       <BackButton goBack={() => navigation.navigate("HometScreen")} />
       {extractedImages.length === 0 ? (
         <Text style={styles.noDataText}>No extracted data available.</Text>
@@ -52,7 +54,6 @@ export default function ExtractedImagesListScreen({ navigation }) {
             <View style={styles.item}>
               <Text style={styles.imageName}>Image: {item.image_name}</Text>
               <Text style={styles.extractedText}>Extracted Text:</Text>
-              {/* Scrollable box for extracted text */}
               <ScrollView style={styles.textBox}>
                 <Text style={styles.textContent}>{item.extracted_text}</Text>
               </ScrollView>
@@ -66,7 +67,7 @@ export default function ExtractedImagesListScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   listContainer: {
-    padding: 16,
+    marginTop: 10,
   },
   loadingText: {
     fontSize: 14,
@@ -90,15 +91,15 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 16,
-    padding: 16,
+    padding: 13,
     backgroundColor: '#fff',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 10,
     elevation: 5,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#58d68d',
+    borderWidth: 2,
   },
   imageName: {
     fontSize: 18,
@@ -112,8 +113,8 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   textBox: {
-    marginTop: 8,
-    maxHeight: 200, // Limit the height of the text box
+    marginTop: 5,
+    maxHeight: 70, 
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
@@ -121,8 +122,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
   },
   textContent: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
-    lineHeight: 20,
+    lineHeight: 15,
   },
 });

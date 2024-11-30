@@ -22,6 +22,7 @@ export default function ResetPasswordScreen({ navigation }) {
 
   return (
     <Background>
+      <BackButton goBack={() => navigation.navigate("StartScreen")} />
       <Logo />
       <Header>Reset your password.</Header>
       <TextInput

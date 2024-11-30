@@ -1,10 +1,10 @@
 import React from "react";
 import { Image, StyleSheet } from "react-native";
 
-export default function Logo() {
+export default function Men() {
   return (
     <Image
-      source={require("../assets/items/logo.jpg")}
+      source={require("../assets/items/mu.png")}
       style={styles.image}
     />
   );

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Background from "../../components/Background";
 import Button from "../../components/Button";
+import Profile from "../../components/profile";
+import Header from "../../components/Header";
+import BackButton from "../../components/BackButton";
+import TextInput from "../../components/TextInput";
 import { useUser } from '../helpers/UserContext';
 import axios from 'axios';
 
@@ -67,66 +71,65 @@ export default function UserProfileScreen({ navigation }) {
 
   return (
     <Background>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate('HometScreen')}
-        style={styles.button}
-      >
-        <Text style={styles.topButtonText}>Home</Text>
-      </Button>
-      <View style={styles.container}>
-        <Text style={styles.heading}>Edit User Profile</Text>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Username:</Text>
+      <BackButton goBack={() => navigation.navigate("HometScreen")} />
+        <Profile/>
+      <Header>Edit User Profile</Header>
+      
           <TextInput
-            style={styles.input}
+            label="Username"
             value={userDetails?.user_name || ''}
             onChangeText={(text) => handleInputChange('user_name', text)}
           />
-        </View>
+       
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email:</Text>
+        
           <TextInput
-            style={styles.input}
+            label="Email"
             value={userDetails?.email || ''}
             onChangeText={(text) => handleInputChange('email', text)}
           />
-        </View>
+       
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Password:</Text>
+        
           <TextInput
-            style={styles.input}
+            label="Password"
             value={userDetails?.hashed_password || ''}
             onChangeText={(text) => handleInputChange('hashed_password', text)}
             secureTextEntry={true}
           />
-        </View>
+        
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>First Name:</Text>
+        
           <TextInput
-            style={styles.input}
+            label="First Name"
             value={userDetails?.first_name || ''}
             onChangeText={(text) => handleInputChange('first_name', text)}
           />
-        </View>
+        
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Last Name:</Text>
+        
           <TextInput
-            style={styles.input}
+            label="Last Name"
             value={userDetails?.last_name || ''}
             onChangeText={(text) => handleInputChange('last_name', text)}
           />
-        </View>
 
-        <Button mode="contained" onPress={handleSave} style={styles.button}>
-          <Text style={styles.topButtonText}>Save Changes</Text>
-        </Button>
-      </View>
+        <Button
+        mode="contained"
+        onPress={async () => {
+          const success = await onSignUpPressed(); 
+          if (!success) {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "RegisterScreen" }],
+            });
+          }
+        }}
+        style={{ marginTop: 24 }}
+      >
+        Save Changes
+      </Button>
+    
     </Background>
   );
 }

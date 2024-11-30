@@ -103,10 +103,10 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
             <Text style={styles.navButtonText}>Menu</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
+          <TouchableOpacity onPress={() => navigation.navigate("userScreen")} style={styles.navButton}>
             <Text style={styles.navButtonText}>Profile</Text>
           </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")} style={styles.navButton}>
+        <TouchableOpacity onPress={() => navigation.navigate("StartScreen")} style={styles.navButton}>
           <Text style={styles.navButtonText}
                 onPress={() =>
                   navigation.reset({
@@ -116,14 +116,14 @@ export default function HomeScreen({ navigation }) {
                 }>
               Logout
         </Text>
-    </TouchableOpacity>
+        </TouchableOpacity>
     </View>
-        <Button onPress={captureImage}  style={{ marginTop: 5 }}>
+        <Button onPress={captureImage}  style={{ marginTop: 40 }}>
           <Capture />
         </Button>
 
      
-        <Button  onPress={pickImage} style={{ marginTop: 5 }}>
+        <Button  onPress={pickImage} style={{ marginTop: 1 }}>
           <Gallery />
         </Button>
       {/* Only show image if it exists */}
@@ -205,13 +205,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    height: 60,
+    height: 50,
     backgroundColor: "#58d68d",
     borderTopWidth: 1,
     borderTopColor: "#ccc",
     position: "absolute",
-    bottom: 0,
+    top: 0,
     width: "100%",
+    borderRadius:115,
+    marginTop:8,
   },
   navButton: {
     flex: 1,
@@ -221,6 +223,7 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 14,
     color: "#FFF",
+    hover: "#000",
     fontWeight: "bold",
   },
   

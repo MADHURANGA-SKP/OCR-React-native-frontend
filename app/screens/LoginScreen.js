@@ -78,7 +78,7 @@ export default function LoginScreen({ navigation }) {
     <Background>
       
       <LoginImg2 />
-      <Header>Hello.</Header>
+      <Header>Please log in to continue.</Header>
       <TextInput
         label="Username"
         returnKeyType="next"
