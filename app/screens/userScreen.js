@@ -69,7 +69,7 @@ export default function UserProfileScreen({ navigation }) {
     <Background>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('HomeScreen')}
+        onPress={() => navigation.navigate('HometScreen')}
         style={styles.button}
       >
         <Text style={styles.topButtonText}>Home</Text>

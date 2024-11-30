@@ -8,7 +8,7 @@ export default function SettingsScreen({ navigation }) {
   
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
+      <BackButton goBack={() => navigation.navigate("HometScreen")} />
       <View style={styles.container}>
         <Text style={styles.header}>Menu</Text>
 
@@ -30,7 +30,7 @@ export default function SettingsScreen({ navigation }) {
 
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("HomeScreen")}
+          onPress={() => navigation.navigate("HometScreen")}
           style={styles.button}
         >
           <Text style={styles.topButtonText}>Home</Text>

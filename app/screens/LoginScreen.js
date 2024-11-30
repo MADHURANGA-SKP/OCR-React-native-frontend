@@ -39,7 +39,7 @@ export default function LoginScreen({ navigation }) {
         alert("Success", "You logged succesfully");
         navigation.reset({
           index: 0,
-          routes: [{ name: "HomeScreen" }],
+          routes: [{ name: "HometScreen" }],
         });
       }
     } catch (error) {

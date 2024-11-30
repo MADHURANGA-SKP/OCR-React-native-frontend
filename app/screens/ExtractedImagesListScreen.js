@@ -40,7 +40,7 @@ export default function ExtractedImagesListScreen({ navigation }) {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
+      <BackButton goBack={() => navigation.navigate("HometScreen")} />
       {extractedImages.length === 0 ? (
         <Text style={styles.noDataText}>No extracted data available.</Text>
       ) : (

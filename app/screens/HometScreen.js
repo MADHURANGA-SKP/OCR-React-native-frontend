@@ -11,15 +11,6 @@ import Header from "../../components/Header";
 import Button from "../../components/Button";
 import { useUser } from "../helpers/UserContext";
 
-import Menu from "../../components/Menu";
-import Submit from "../../components/Submit";
-import Logout from "../../components/Logout";
-import Usere from "../../components/Usere";
-
-
-
-
-
 export default function HomeScreen({ navigation }) {
   const { user } = useUser(); // Get user from context
   const [image, setImage] = useState(null);
@@ -57,31 +48,27 @@ export default function HomeScreen({ navigation }) {
     }
 
     const formData = new FormData();
-      formData.append("user_id", user.user_id); 
+    formData.append("user_id", user.user_id); 
 
-      // Convert image URI to a Blob and then to a File
-      const uriParts = image.split('.');
-      const fileType = uriParts[uriParts.length - 1];
+    const uriParts = image.split('.');
+    const fileType = uriParts[uriParts.length - 1];
 
-      try {
-        // Fetch the image and convert to Blob
-        const response = await fetch(image);
-        const blob = await response.blob();
+    try {
+      const response = await fetch(image);
+      const blob = await response.blob();
 
-        // Convert the Blob to a File object
-        const file = new File([blob], `image.${fileType}`, {
-          type: `image/${fileType}`,
-        });
+      const file = new File([blob], `image.${fileType}`, {
+        type: `image/${fileType}`,
+      });
 
-        // Append the file to FormData
-        formData.append("image", file);
+      formData.append("image", file);
 
-        // Send the FormData to the server
-        const serverResponse = await axios.post("http://localhost:8080/ocr/imageconv", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+      const serverResponse = await axios.post("http://localhost:8080/ocr/imageconv", formData, {
+
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
         // Handle the response
         setExtractedText(serverResponse.data.extracted_text); 
@@ -113,65 +100,35 @@ export default function HomeScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.navBar}>
-  <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")} style={styles.navButton}>
-    <Text style={styles.navButtonText}>Menu</Text>
-  </TouchableOpacity>
-  <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
-    <Text style={styles.navButtonText}>Profile</Text>
-  </TouchableOpacity>
-  <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")} style={styles.navButton}>
-    <Text style={styles.navButtonText}>
-    <Button
-        mode=""
-        onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "StartScreen" }],
-          })
-        }
-        style={{ marginTop: 10 }}
-      >
-        Logout
-        {/* <Logout /> */}
-      </Button>
-
-    </Text>
-  </TouchableOpacity>
-  
-</View>
-
-    
-      
-      {/* <View style={styles.topButtonsContainer}> 
-        <Button mode="contained" onPress={() => navigation.navigate("SettingsScreen")}>
-          <Text style={styles.topButtonText}>Menu</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("HometScreen")} style={styles.navButton}>
+            <Text style={styles.navButtonText}>Menu</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
+            <Text style={styles.navButtonText}>Profile</Text>
+          </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ProfileScreen")} style={styles.navButton}>
+          <Text style={styles.navButtonText}
+                onPress={() =>
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: "StartScreen" }],
+                  })
+                }>
+              Logout
+        </Text>
+    </TouchableOpacity>
+    </View>
+        <Button onPress={captureImage}  style={{ marginTop: 5 }}>
+          <Capture />
         </Button>
-        <Button mode="contained" onPress={() => navigation.navigate("userScreen")}>
-          <Text style={styles.topButtonText}>User</Text>
-        </Button>
-      </View>
-      <Logo />
-      <Header>Welcome</Header>*/}
 
      
-      <Button  onPress={captureImage}  style={{ marginTop: 10 }}>
-      <Capture />
-      </Button>
-
-     
-      <Button  onPress={pickImage} style={{ marginTop: 10 }}>
-      <Gallery />
-      </Button>
-        
-
-
-      
-
-    
-
+        <Button  onPress={pickImage} style={{ marginTop: 5 }}>
+          <Gallery />
+        </Button>
       {/* Only show image if it exists */}
       {image ? (
-        <Image source={{ uri: image }} style={styles.image} />
+        <Image source={{ uri: image }} style={styles.imagetext} />
       ) : (
         <Text style={styles.instructions}>No image selected yet.</Text>
       )}
@@ -184,43 +141,14 @@ export default function HomeScreen({ navigation }) {
       ) : (
         <Text style={styles.instructions}>Upload or capture an image to extract text.</Text>
       )}
-
-
-
-
-<     View style={styles.topButtonsContainer}>
-        <Button  mode="contained" onPress={sendImageToServer} style={{ marginTop: 20 }}>
-        submit
-      </Button>
-
-      {/* <Button mode="contained" onPress={() => navigation.navigate("SettingsScreen")}>
-          <Text style={styles.topButtonText}>  <Menu />  </Text>
-        </Button>
-        <Button mode="contained" onPress={() => navigation.navigate("userScreen")}>
-          <Text style={styles.topButtonText}>  <Usere /> </Text>
-        </Button> */}
-  
-      
-        
-      </View>
-
-
-
-
-
-      
+        <View style={styles.topButtonsContainer}>
+          <Button  mode="contained" onPress={sendImageToServer} style={{ marginTop: 5 }}>
+          submit
+          </Button>
+        </View>
     </Background>
   );
 }
-
-
-
-
-
-
-
-
-
 const styles = StyleSheet.create({
   topButtonsContainer: {
     flexDirection: "row",
@@ -229,25 +157,19 @@ const styles = StyleSheet.create({
     gap: "10px",
     position: "related",
     top: 0,
-    width: "50%",
-    padding: 20,
-   
+    padding: 40,
     zIndex: 10,
   },
   topButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
-  image: {
+  imagetext: {
     width: 100,
     height: 100,
-    marginTop: 20,
+    marginTop: 5,
     borderRadius: 10,
   },
-  textContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
   textLabel: {
     fontWeight: "bold",
     fontSize: 16,
@@ -263,10 +185,10 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   textContainer: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-    flex: 1, // Ensure this container uses available space
-    maxHeight: 180, // Limit height to prevent it from overflowing
+    marginTop: 10,
+    paddingHorizontal: 10,
+    flex: 1, 
+    maxHeight: 80,
   },
   textLabel: {
     fontWeight: "bold",
@@ -274,22 +196,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   extractedText: {
-    fontSize: 14,
+    fontSize: 10,
     color: "#333",
-    lineHeight: 20, // Add line height for better readability
+    lineHeight: 13, 
   },
-  instructions: {
-    marginTop: 20,
-    fontSize: 14,
-    color: "#888",
-  },
-
+  
   navBar: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     height: 60,
-    backgroundColor: "#26C761",
+    backgroundColor: "#58d68d",
     borderTopWidth: 1,
     borderTopColor: "#ccc",
     position: "absolute",
