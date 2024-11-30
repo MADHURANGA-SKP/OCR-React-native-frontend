@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
 
     try {
       // Make POST request to Golang backend API
-      const response = await axios.post('http://localhost:8080/ocr/login', {
+      const response = await axios.post('http://172.25.141.196:8080/ocr/login', {
         user_name: UserName.value,
         hashed_password: password.value,
       });
