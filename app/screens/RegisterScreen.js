@@ -75,7 +75,6 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <Background>
-      <Logo />
       <Header>Welcome.</Header>
       <TextInput
         label="FirstName"

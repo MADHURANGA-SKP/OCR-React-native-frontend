@@ -100,7 +100,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <Background>
       <View style={styles.navBar}>
-          <TouchableOpacity onPress={() => navigation.navigate("HometScreen")} style={styles.navButton}>
+          <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
             <Text style={styles.navButtonText}>Menu</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")} style={styles.navButton}>
