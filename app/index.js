@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { theme } from "./core/theme";
 import { UserProvider } from "./helpers/UserContext";
-import { StartScreen, LoginScreen, RegisterScreen, ResetPasswordScreen,ExtractedImagesListScreen, HomeScreen, SettingsScreen, userScreen } from "./screens";
+import { StartScreen, LoginScreen, RegisterScreen, ResetPasswordScreen,ExtractedImagesListScreen, HomeScreen, SettingsScreen, UserProfileScreen } from "./screens";
 
 const Stack = createStackNavigator();
 
@@ -21,7 +21,7 @@ export default function App() {
         >
         <Stack.Screen name="StartScreen" component={StartScreen} />
         <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-        <Stack.Screen name="userScreen" component={userScreen} />
+        <Stack.Screen name="userScreen" component={UserProfileScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />

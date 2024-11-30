@@ -6,10 +6,6 @@ import Button from "../../components/Button";
 import Paragraph from "../../components/Paragraph";
 
 export default function StartScreen({ navigation }) {
-  const handleLogin = () => {
-    navigation.navigate('HomeScreen');
-  };
-
   return (
     <Background>
       <Logo />

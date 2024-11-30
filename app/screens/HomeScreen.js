@@ -10,11 +10,10 @@ import Button from "../../components/Button";
 import { useUser } from "../helpers/UserContext";
 
 export default function HomeScreen({ navigation }) {
-  const { user } = useUser(); // Get user from context
+  const { user } = useUser();
   const [image, setImage] = useState(null);
   const [extractedText, setExtractedText] = useState("");
 
-  // Function to request permissions
   const requestCameraPermissions = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== "granted") {
@@ -22,7 +21,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  // Function to open the camera and capture an image
   const captureImage = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -36,8 +34,7 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  
-  // Function to send image to the server for OCR
+
   const sendImageToServer = async () => {
     if (!user || !image) {
       console.error("User not logged in or no image selected.");
@@ -48,31 +45,25 @@ export default function HomeScreen({ navigation }) {
     const formData = new FormData();
       formData.append("user_id", user.user_id); 
 
-      // Convert image URI to a Blob and then to a File
       const uriParts = image.split('.');
       const fileType = uriParts[uriParts.length - 1];
 
       try {
-        // Fetch the image and convert to Blob
         const response = await fetch(image);
         const blob = await response.blob();
 
-        // Convert the Blob to a File object
         const file = new File([blob], `image.${fileType}`, {
           type: `image/${fileType}`,
         });
 
-        // Append the file to FormData
         formData.append("image", file);
 
-        // Send the FormData to the server
         const serverResponse = await axios.post("http://localhost:8080/ocr/imageconv", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        // Handle the response
         setExtractedText(serverResponse.data.extracted_text); 
       } catch (error) {
         console.error("Error sending image to server:", error);
@@ -103,7 +94,7 @@ export default function HomeScreen({ navigation }) {
         <Button mode="contained" onPress={() => navigation.navigate("SettingsScreen")}>
           <Text style={styles.topButtonText}>Menu</Text>
         </Button>
-        <Button mode="contained" onPress={() => navigation.navigate("userScreen")}>
+        <Button mode="contained" onPress={() => navigation.replace("userScreen")}>
           <Text style={styles.topButtonText}>User</Text>
         </Button>
       </View>
@@ -117,7 +108,7 @@ export default function HomeScreen({ navigation }) {
         Pick Image from Gallery
       </Button>
   
-      {/* Only show image if it exists */}
+
       {image ? (
         <Image source={{ uri: image }} style={styles.image} />
       ) : (

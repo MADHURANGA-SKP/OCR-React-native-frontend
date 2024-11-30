@@ -1,23 +1,25 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import Background from "../../components/Background";
 import Button from "../../components/Button";
-import BackButton from "../../components/BackButton";
 import { useUser } from '../helpers/UserContext';
 import axios from 'axios';
 
-export default function UserProfileScreen() {
-  const { user, setUserData } = useUser();
-  const [userDetails, setuserDetails] = useState(null); // State to store user data
-  const [isLoading, setIsLoading] = useState(true); // State for loading indicator
-  const [error, setError] = useState(null); // State for error handling
+export default function UserProfileScreen({ navigation }) {
+  const { user } = useUser(); // Use only user from context
+  const [userDetails, setUserDetails] = useState(null); // Bind form to userDetails
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch user data and populate userDetails
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (user && user.user_id) {
-          const response = await axios.get(`http://localhost:8080/ocr/getuser?user_id=${user.user_id}`);
-          setuserDetails(response.data);
+          const response = await axios.get(
+            `http://localhost:8080/ocr/getuser?user_id=${user.user_id}`
+          );
+          setUserDetails(response.data);
         }
       } catch (err) {
         setError(err);
@@ -25,26 +27,26 @@ export default function UserProfileScreen() {
         setIsLoading(false);
       }
     };
-    console.log('User details:', userDetails)
+
     fetchData();
-  }, [user]); 
+  }, [user]);
 
   const handleInputChange = (field, value) => {
-    setuserDetails(prevUser => ({
+    setUserDetails((prevUser) => ({
       ...prevUser,
-      [field]: value, 
+      [field]: value, // Update the corresponding field
     }));
   };
 
   const handleSave = async () => {
     try {
       const response = await axios.patch('http://localhost:8080/ocr/updateuser', {
-        user_id: user.user_id,
-        user_name: userDetails.username,
-        first_name: userDetails.firstName,
-        last_name: userDetails.lastName,
+        user_id: userDetails.user_id, // Use userDetails for the updated data
+        user_name: userDetails.user_name,
+        first_name: userDetails.first_name,
+        last_name: userDetails.last_name,
         email: userDetails.email,
-        hashed_password: userDetails.password,
+        hashed_password: userDetails.hashed_password,
       });
       if (response.status === 200) {
         alert('User data saved successfully!');
@@ -63,10 +65,15 @@ export default function UserProfileScreen() {
     return <Text>Error: {error.message}</Text>;
   }
 
-
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate("screens/HomeScreen")} />
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('HomeScreen')}
+        style={styles.button}
+      >
+        <Text style={styles.topButtonText}>Home</Text>
+      </Button>
       <View style={styles.container}>
         <Text style={styles.heading}>Edit User Profile</Text>
 
@@ -74,7 +81,7 @@ export default function UserProfileScreen() {
           <Text style={styles.label}>Username:</Text>
           <TextInput
             style={styles.input}
-            value={user.user_name}
+            value={userDetails?.user_name || ''}
             onChangeText={(text) => handleInputChange('user_name', text)}
           />
         </View>
@@ -83,7 +90,7 @@ export default function UserProfileScreen() {
           <Text style={styles.label}>Email:</Text>
           <TextInput
             style={styles.input}
-            value={user.email}
+            value={userDetails?.email || ''}
             onChangeText={(text) => handleInputChange('email', text)}
           />
         </View>
@@ -92,9 +99,9 @@ export default function UserProfileScreen() {
           <Text style={styles.label}>Password:</Text>
           <TextInput
             style={styles.input}
-            value={user.hashed_password}
+            value={userDetails?.hashed_password || ''}
             onChangeText={(text) => handleInputChange('hashed_password', text)}
-            secureTextEntry={true} // Hide password input
+            secureTextEntry={true}
           />
         </View>
 
@@ -102,7 +109,7 @@ export default function UserProfileScreen() {
           <Text style={styles.label}>First Name:</Text>
           <TextInput
             style={styles.input}
-            value={user.first_name}
+            value={userDetails?.first_name || ''}
             onChangeText={(text) => handleInputChange('first_name', text)}
           />
         </View>
@@ -111,17 +118,14 @@ export default function UserProfileScreen() {
           <Text style={styles.label}>Last Name:</Text>
           <TextInput
             style={styles.input}
-            value={user.last_name}
+            value={userDetails?.last_name || ''}
             onChangeText={(text) => handleInputChange('last_name', text)}
           />
         </View>
-        <Button
-            mode="contained"
-            onPress={handleSave}
-            style={styles.button}
-          >
-            <Text style={styles.topButtonText}>Save Changes</Text>
-          </Button>
+
+        <Button mode="contained" onPress={handleSave} style={styles.button}>
+          <Text style={styles.topButtonText}>Save Changes</Text>
+        </Button>
       </View>
     </Background>
   );
