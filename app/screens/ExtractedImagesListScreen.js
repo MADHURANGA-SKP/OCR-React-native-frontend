@@ -5,7 +5,7 @@ import Background from "../../components/Background";
 import axios from 'axios';
 import { useUser } from '../helpers/UserContext';
 
-export default function ExtractedImagesListScreen() {
+export default function ExtractedImagesListScreen({ navigation }) {
   const { user } = useUser();
   const [extractedImages, setExtractedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +15,7 @@ export default function ExtractedImagesListScreen() {
     const fetchExtractedImages = async () => {
       try {
         if (user && user.user_id) {
-          const response = await axios.get(`http://localhost:8080/ocr/getusers?user_id=${user.user_id}`);
+          const response = await axios.get(`http://172.25.141.196:8080/ocr/getusers?user_id=${user.user_id}`);
           setExtractedImages(response.data);  
         }
       } catch (err) {
@@ -41,41 +41,42 @@ export default function ExtractedImagesListScreen() {
   return (
     <Background>
       <BackButton goBack={() => navigation.navigate("HomeScreen")} />
-      <ScrollView style={styles.container}>
-        {extractedImages.length === 0 ? (
-          <Text style={styles.noDataText}>No extracted data available.</Text>
-        ) : (
-          <FlatList
-            data={extractedImages}
-            keyExtractor={(item) => item.conversion_id.toString()}  // Ensure correct key extraction
-            renderItem={({ item }) => (
-              <View style={styles.item}>
-                <Text style={styles.imageName}>Image: {item.image_name}</Text>
-                <Text style={styles.extractedText}>Extracted Text:</Text>
+      {extractedImages.length === 0 ? (
+        <Text style={styles.noDataText}>No extracted data available.</Text>
+      ) : (
+        <FlatList
+          data={extractedImages}
+          keyExtractor={(item) => item.conversion_id.toString()}
+          contentContainerStyle={styles.listContainer}
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text style={styles.imageName}>Image: {item.image_name}</Text>
+              <Text style={styles.extractedText}>Extracted Text:</Text>
+              {/* Scrollable box for extracted text */}
+              <ScrollView style={styles.textBox}>
                 <Text style={styles.textContent}>{item.extracted_text}</Text>
-              </View>
-            )}
-          />
-        )}
-      </ScrollView>
+              </ScrollView>
+            </View>
+          )}
+        />
+      )}
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  listContainer: {
     padding: 16,
   },
   loadingText: {
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'blue',
     textAlign: 'center',
     marginTop: 20,
   },
   errorText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'red',
     textAlign: 'center',
@@ -110,9 +111,17 @@ const styles = StyleSheet.create({
     marginTop: 8,
     color: '#555',
   },
+  textBox: {
+    marginTop: 8,
+    maxHeight: 200, // Limit the height of the text box
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 8,
+    backgroundColor: '#f9f9f9',
+  },
   textContent: {
     fontSize: 14,
-    marginTop: 5,
     color: '#666',
     lineHeight: 20,
   },

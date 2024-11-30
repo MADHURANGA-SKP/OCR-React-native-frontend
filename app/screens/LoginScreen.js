@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { useUser } from "../helpers/UserContext";
 import axios from "axios";
 import Background from "../../components/Background";
-import Logo from "../../components/Logo";
+import LoginImg2 from "../../components/LoginImg2";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
@@ -27,18 +27,14 @@ export default function LoginScreen({ navigation }) {
       return;
     }
 
-    // Show loading indicator while the request is in progress
-    setLoading(true);
-    setErrorMessage(""); // Clear any previous error messages
+    setErrorMessage("");
 
     try {
-      // Make POST request to Golang backend API
-      const response = await axios.post('http://172.25.141.196:8080/ocr/login', {
+      const response = await axios.post('http://localhost:8080/ocr/login', {
         user_name: UserName.value,
         hashed_password: password.value,
       });
 
-      // Handle successful login response (status 200)
       if (response.status === 200) {
         alert("Success", "You logged succesfully");
         navigation.reset({
@@ -48,20 +44,15 @@ export default function LoginScreen({ navigation }) {
       }
     } catch (error) {
       if (error.response) {
-        // Handle different HTTP status codes
         if (error.response.status === 404) {
-          // Show alert for 404 status (user not found)
           alert("Error", "Please sign up first.");
         } else {
-          // Show alert for other error responses (e.g., 500, 401, etc.)
           alert("Error", "An error occurred. Please try again.");
         }
       } else {
-        // Handle network or other unexpected errors
         alert("Error", "Unable to reach the server. Please check your connection.");
       }
     } finally {
-      // Hide loading indicator once request is complete
       setLoading(false);
     }
     
@@ -71,13 +62,10 @@ export default function LoginScreen({ navigation }) {
         hashed_password: password.value,
       });
   
-      // Assuming the response structure matches the given one
       const { session_id, access_token, user } = response.data;
   
-      // Save user data in the context
       setUserData(user);
   
-      // Optionally, save session_id and access_token if needed for further API calls
       localStorage.setItem("session_id", session_id);
       localStorage.setItem("access_token", access_token);
     } catch (error) {
@@ -89,11 +77,12 @@ export default function LoginScreen({ navigation }) {
   return (
     <Background>
       
-      <Logo />
+      <LoginImg2 />
       <Header>Hello.</Header>
       <TextInput
         label="Username"
         returnKeyType="next"
+        mode="outlined"
         value={UserName.value}
         onChangeText={(text) => setUserName({ value: text, error: "" })}
         autoCapitalize="none"
@@ -102,6 +91,7 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         label="Password"
         returnKeyType="done"
+        mode="outlined"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: "" })}
         error={!!password.error}

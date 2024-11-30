@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity,Alert  } from "react-native";
 import { Text } from "react-native-paper";
 import axios from "axios";
 import Background from "../../components/Background";
-import Logo from "../../components/Logo";
+import SignUp from "../../components/SignUp";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
@@ -38,7 +38,6 @@ export default function RegisterScreen({ navigation }) {
       return;
     }
     try {
-    // Send POST request to Golang backend API
     const response = await axios.post('http://172.25.141.196:8080/ocr/signup', {
       user_name: userName.value,
       first_name: firstName.value,
@@ -48,7 +47,6 @@ export default function RegisterScreen({ navigation }) {
     });
 
     if (response.status === 200) {
-      // Show success alert and navigate after a delay
       alert("Success", "Account created successfully!", [
         [
           {
@@ -56,7 +54,7 @@ export default function RegisterScreen({ navigation }) {
             onPress: () => {
               navigation.reset({
                 index: 0,
-                routes: [{ name: "LoginScreen" }], // Redirect to LoginScreen
+                routes: [{ name: "LoginScreen" }],
               });
             },
           },
@@ -64,11 +62,9 @@ export default function RegisterScreen({ navigation }) {
         { cancelable: false }
       ]);
     } else  {
-      // Handle other server error responses
       alert("Server Error", "An error occurred. Please try again.");
     }
   } catch (error) {
-    // Handle error response from the backend
     if (error.response) {
       alert("failed to create User, Please try again");
     } else {
@@ -79,7 +75,6 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <Background>
-      {/* <BackButton goBack={navigation.goBack} /> */}
       <Logo />
       <Header>Welcome.</Header>
       <TextInput
@@ -132,13 +127,11 @@ export default function RegisterScreen({ navigation }) {
         onPress={async () => {
           const success = await onSignUpPressed(); 
           if (!success) {
-            // Reset navigation and redirect to LoginScreen
             navigation.reset({
               index: 0,
               routes: [{ name: "RegisterScreen" }],
             });
           }if (success) {
-            // Reset navigation and redirect to LoginScreen
             navigation.reset({
               index: 0,
               routes: [{ name: "LoginScreen" }],
@@ -149,14 +142,15 @@ export default function RegisterScreen({ navigation }) {
       >
         Register
       </Button>
-      <View style={styles.row}>
-        <Text>I already have an account !</Text>
-      </View>
-      <View style={styles.row}>
-        <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
-          <Text style={styles.link}>Log in</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.row}>
+          <Text>I already have an account !</Text>
+        </View>
+        
+        <View style={styles.row}>
+          <TouchableOpacity onPress={() => navigation.replace("LoginScreen")}>
+            <Text style={styles.link}>Log in</Text>
+          </TouchableOpacity>
+        </View>
     </Background>
   );
 }

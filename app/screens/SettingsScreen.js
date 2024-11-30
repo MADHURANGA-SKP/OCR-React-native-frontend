@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Button } from "react-native-paper"; // Import Button from react-native-paper
+import { Button } from "react-native-paper"; 
 import Background from "../../components/Background";
 import BackButton from "../../components/BackButton";
 
@@ -8,11 +8,10 @@ export default function SettingsScreen({ navigation }) {
   
   return (
     <Background>
-      <BackButton goBack={navigation.goBack} />
+      <BackButton goBack={() => navigation.navigate("HomeScreen")} />
       <View style={styles.container}>
         <Text style={styles.header}>Menu</Text>
 
-        {/* Button with Text inside */}
         <Button
           mode="contained"
           onPress={() => navigation.navigate("userScreen")}
@@ -44,8 +43,8 @@ export default function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start", // Align buttons to top
-    alignItems: "flex-start", // Align buttons to left
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     padding: 16,
   },
   header: {
@@ -55,11 +54,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 16,
-    width: "100%", // Ensure buttons take up full width
+    width: "100%", 
   },
   topButtonText: {
     fontSize: 16,
-    color: "white", // White color for the text inside the button
-    textAlign: "center", // Center the text inside the button
+    color: "white",
+    textAlign: "center",
   },
 });
