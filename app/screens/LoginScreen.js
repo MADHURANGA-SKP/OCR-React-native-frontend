@@ -30,9 +30,7 @@ export default function LoginScreen({ navigation }) {
     setErrorMessage("");
 
     try {
-
       const response = await axios.post('http://localhost:8080/ocr/login', {
-
         user_name: UserName.value,
         hashed_password: password.value,
       });
