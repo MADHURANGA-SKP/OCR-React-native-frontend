@@ -12,6 +12,9 @@ export default function TextInput({ errorText, description, ...props }) {
         selectionColor={theme.colors.primary}
         underlineColor="transparent"
         mode="outlined"
+        theme={{
+          roundness: 20, // Set roundness for curved edges
+        }}
         {...props}
       />
       {description && !errorText ? (

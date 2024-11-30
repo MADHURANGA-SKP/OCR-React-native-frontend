@@ -15,7 +15,7 @@ export default function ExtractedImagesListScreen({ navigation }) {
     const fetchExtractedImages = async () => {
       try {
         if (user && user.user_id) {
-          const response = await axios.get(`http://localhost:8080/ocr/getusers?user_id=${user.user_id}`);
+          const response = await axios.get(`http://172.25.141.196:8080/ocr/getusers?user_id=${user.user_id}`);
           setExtractedImages(response.data);  
         }
       } catch (err) {

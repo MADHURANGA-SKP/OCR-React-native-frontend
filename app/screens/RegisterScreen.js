@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity,Alert  } from "react-native";
 import { Text } from "react-native-paper";
 import axios from "axios";
 import Background from "../../components/Background";
-import Logo from "../../components/Logo";
+import SignUp from "../../components/SignUp";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
 import TextInput from "../../components/TextInput";
